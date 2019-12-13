@@ -1,90 +1,9 @@
 package com.jmakulec.texttoospeech;
 
-import javax.sound.sampled.*;
 import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
-import java.io.SequenceInputStream;
-import java.util.concurrent.CountDownLatch;
 
-
-public class GUI  {
-    private JFrame frame;
-    private static final String libURL =  "E:\\Dokumenty\\PracaInz\\";
-    private static boolean done = false;
-    public static void main(String[] args) {
-
-        //SwingUtilities.invokeLater(GUI::new);
-
-        String wavFile1 = libURL + "przy.wav";
-        String wavFile2 = libURL + "ja.wav";
-        String wavFile3 = libURL + "ciel.wav";
-        try{
-            AudioInputStream clip1 = AudioSystem.getAudioInputStream(new File(wavFile1));
-            AudioInputStream clip2 = AudioSystem.getAudioInputStream(new File(wavFile2));
-            AudioInputStream clip3 = AudioSystem.getAudioInputStream(new File(wavFile3));
-
-            //TODO sound library - extracting names from catalogue and putting them into a data file
-            //todo cutting the
-
-
-            AudioInputStream tempAppend = appender(clip1, clip2); //TODO appending all the sounds loop function
-            AudioInputStream appendedFiles = appender(tempAppend, clip3);
-
-            AudioSystem.write(appendedFiles,
-                    AudioFileFormat.Type.WAVE,
-                    new File(libURL + "appended.wav"));
-
-            //AudioFormat format = appendedFiles.getFormat();
-            //DataLine.Info info = new DataLine.Info(Clip.class, format);
-            Clip clip = (Clip) AudioSystem.getClip();
-
-
-
-            clip.addLineListener(new LineListener() {
-                @Override
-                public void update(LineEvent event) {
-                    LineEvent.Type eventType = event.getType();
-                    if(eventType == LineEvent.Type.STOP || eventType == LineEvent.Type.CLOSE){
-                        done = true;
-                        notifyAll();
-                    }
-                }
-            });
-
-            clip.open(appendedFiles);
-            clip.start();
-
-
-
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
-        }
-
-        int exitCue;
-        try {
-            exitCue = System.in.read();
-            System.out.print("Program succesfully closed");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private static AudioInputStream appender(AudioInputStream clip1, AudioInputStream clip2){
-        return new AudioInputStream(
-                new SequenceInputStream(clip1, clip2),
-                clip1.getFormat(),
-                clip1.getFrameLength() + clip2.getFrameLength()
-        );
-    }
-
-    private GUI(){
-        initUI();
-    }
-
-    private void initUI(){
-        frame = new JFrame("Text to speech");
-        frame.setVisible(true);
-    }
+public class GUI {
+    private JPanel frame;
+    private JButton okButton;
+    private JTextArea input;
 }

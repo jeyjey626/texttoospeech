@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class AudioAppender {
 //todo: move appending here, looped.
-    public AudioInputStream appendFiles(ArrayList list){
-        
-    }
+    /*public AudioInputStream appendFiles(ArrayList list){
+
+    }*/
 }
