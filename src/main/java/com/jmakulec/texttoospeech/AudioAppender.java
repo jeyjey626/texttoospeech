@@ -14,7 +14,7 @@ public class AudioAppender {
     //todo make liburl an input
 
 
-//todo: move appending here, looped, multiple files
+//todo: wrong name files
     public static AudioInputStream appendFiles(List<String> list) throws IOException, UnsupportedAudioFileException {
         AudioInputStream tempAppend = null;
         int numberOfFiles = list.size();
