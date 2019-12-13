@@ -42,6 +42,9 @@ public class GUI1 {
         }
 
         try{
+            ArrayList<String> list = Slicer.sliceText("przyjaciel");
+            AudioInputStream pleaseWork = AudioAppender.appendFiles(list);
+            AudioFilePlayer.playWord(pleaseWork);
             System.out.println(Slicer.sliceText("przyjaciel"));
         } catch (Exception e) {
             e.printStackTrace();
