@@ -8,6 +8,7 @@ import java.io.SequenceInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
@@ -37,6 +38,12 @@ public class GUI1 {
             result.forEach(System.out::println);
 
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try{
+            System.out.println(Slicer.sliceText("przyjaciel"));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
