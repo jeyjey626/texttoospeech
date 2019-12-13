@@ -5,7 +5,13 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.SequenceInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class GUI1 {
@@ -16,9 +22,24 @@ public class GUI1 {
 
         //SwingUtilities.invokeLater(GUI1::new);
 
+        SoundLibraryContent.inputLibrary(libURL);
+        System.out.println(SoundLibraryContent.getFileMap());
+
         String wavFile1 = libURL + "przy.wav";
         String wavFile2 = libURL + "ja.wav";
         String wavFile3 = libURL + "ciel.wav";
+
+        try (Stream<Path> walk = Files.walk(Paths.get(libURL))) {
+
+            List<String> result = walk.filter(Files::isRegularFile)
+                    .map(Path::toString).collect(Collectors.toList());
+
+            result.forEach(System.out::println);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         try{
             AudioInputStream clip1 = AudioSystem.getAudioInputStream(new File(wavFile1));
             AudioInputStream clip2 = AudioSystem.getAudioInputStream(new File(wavFile2));
@@ -27,7 +48,7 @@ public class GUI1 {
             //TODO sound library - extracting names from catalogue and putting them into a data file
             //todo cutting the
 
-            //todo: Source data line - zapisuje i odtwarza
+
 
             AudioInputStream tempAppend = appender(clip1, clip2); //TODO appending all the sounds loop function
             AudioInputStream appendedFiles = appender(tempAppend, clip3);

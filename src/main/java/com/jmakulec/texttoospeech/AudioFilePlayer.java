@@ -22,9 +22,7 @@ public class AudioFilePlayer {
                  line.drain();
                  line.stop();
              }
-         } catch (LineUnavailableException e) {
-             e.printStackTrace();
-         } catch (IOException e) {
+         } catch (LineUnavailableException | IOException e) {
              e.printStackTrace();
          }
         } catch (Exception e) {
