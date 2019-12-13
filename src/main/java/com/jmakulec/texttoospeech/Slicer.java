@@ -12,11 +12,12 @@ public class Slicer {
         int length = input.length();
         String startString = input;
         StringBuilder workable = null;
-        String rest;
+        String rest = input;
         for (int i = 0; i < length; i++){
 
             if (workable != null) {
                 startString = startString.substring(1);
+                rest = startString.substring(1);
                 workable.append(String.valueOf(startString.charAt(0))); //loading next letters into comparable string
             }else workable = new StringBuilder(String.valueOf(startString.charAt(0)));
             //rest = startString.substring(1, i+1); //leaving the rest for further slicing
@@ -24,6 +25,7 @@ public class Slicer {
             if (SoundLibraryContent.isInLibrary(String.valueOf(workable))){
                 //startString = rest;
                 workableArrayList.add(String.valueOf(workable));
+                startString = rest;
                 workable = null;
             }
         }
