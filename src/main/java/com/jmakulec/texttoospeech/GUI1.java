@@ -2,17 +2,7 @@ package com.jmakulec.texttoospeech;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
-import java.io.SequenceInputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 public class GUI1 {
@@ -24,13 +14,25 @@ public class GUI1 {
         //SwingUtilities.invokeLater(GUI1::new);
 
         SoundLibraryContent.inputLibrary(libURL);
-        System.out.println(SoundLibraryContent.getFileMap());
 
-        String wavFile1 = libURL + "przy.wav";
+
+        try{
+            ArrayList list = WordSlicer.sliceText("przyjaciel");
+            AudioInputStream pleaseWork = AudioAppender.appendFiles(list);
+            AudioFilePlayer.playWord(pleaseWork);
+            System.out.println(WordSlicer.sliceText("przyjaciel"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //System.out.println(SoundLibraryContent.getFileMap());
+
+        /*String wavFile1 = libURL + "przy.wav";
         String wavFile2 = libURL + "ja.wav";
         String wavFile3 = libURL + "ciel.wav";
 
-        try (Stream<Path> walk = Files.walk(Paths.get(libURL))) {
+       /* try (Stream<Path> walk = Files.walk(Paths.get(libURL))) {
 
             List<String> result = walk.filter(Files::isRegularFile)
                     .map(Path::toString).collect(Collectors.toList());
@@ -39,24 +41,13 @@ public class GUI1 {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        try{
-            ArrayList<String> list = Slicer.sliceText("przyjaciel");
-            AudioInputStream pleaseWork = AudioAppender.appendFiles(list);
-            AudioFilePlayer.playWord(pleaseWork);
-            System.out.println(Slicer.sliceText("przyjaciel"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try{
+        }*/
+        /*try{
             AudioInputStream clip1 = AudioSystem.getAudioInputStream(new File(wavFile1));
             AudioInputStream clip2 = AudioSystem.getAudioInputStream(new File(wavFile2));
             AudioInputStream clip3 = AudioSystem.getAudioInputStream(new File(wavFile3));
 
-            //TODO sound library - extracting names from catalogue and putting them into a data file
-            //todo cutting the
+
 
 
 
@@ -71,17 +62,17 @@ public class GUI1 {
 
         } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
-    private static AudioInputStream appender(AudioInputStream clip1, AudioInputStream clip2){
+   /* private static AudioInputStream appender(AudioInputStream clip1, AudioInputStream clip2){
         return new AudioInputStream(
                 new SequenceInputStream(clip1, clip2),
                 clip1.getFormat(),
                 clip1.getFrameLength() + clip2.getFrameLength()
         );
-    }
+    }*/
 
 
     private GUI1(){

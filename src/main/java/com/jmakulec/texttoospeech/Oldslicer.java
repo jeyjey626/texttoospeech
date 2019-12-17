@@ -3,7 +3,7 @@ package com.jmakulec.texttoospeech;
 import java.util.ArrayList;
 import java.util.ArrayList;
 
-public class Slicer {
+public class Oldslicer {
 
     private static ArrayList<String> workableArrayList;
 
