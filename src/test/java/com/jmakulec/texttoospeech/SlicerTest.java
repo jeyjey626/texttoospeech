@@ -13,14 +13,26 @@ public class SlicerTest {
     @Test
     public void shouldSliceText(){
         //given
-        WordSlicer slicer = new WordSlicer();
+        //WordSlicer slicer = new WordSlicer();
         SoundLibraryContent.inputLibrary("E:\\Dokumenty\\PracaInz\\");
 
         //when
-        ArrayList result = slicer.sliceText("przyjaciel");
+        ArrayList result = WordSlicer.sliceText("przyjaciel");
 
         //then
         assertEquals(asList("przy","ja","ciel"), result);
+    }
+
+    @Test
+    public void shouldSliceSentences(){
+        //given
+        SentenceSlicer slicer = new SentenceSlicer();
+
+        //when
+        ArrayList result = slicer.sliceText("przyjaciel ';';'; .,przyjaciel elo siema . /*-");
+
+        //then
+        assertEquals(asList("przyjaciel", "przyjaciel", "elo", "siema"), result);
     }
 
 }
