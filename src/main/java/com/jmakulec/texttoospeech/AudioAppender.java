@@ -17,7 +17,7 @@ public class AudioAppender {
 //todo: wrong name files
     public static AudioInputStream appendFiles(List<String> list) throws IOException, UnsupportedAudioFileException {
         AudioInputStream tempAppend = null;
-        int numberOfFiles = list.size();
+        //int numberOfFiles = list.size();
         for (int i = 0; i < list.size() - 1; i++){
             if (tempAppend == null){
                 tempAppend = appender(AudioSystem.getAudioInputStream(new File(libURL + list.get(0) + ".wav")),

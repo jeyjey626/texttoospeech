@@ -13,7 +13,6 @@ public class SlicerTest {
     @Test
     public void shouldSliceText(){
         //given
-        //WordSlicer slicer = new WordSlicer();
         SoundLibraryContent.inputLibrary("E:\\Dokumenty\\PracaInz\\");
 
         //when
@@ -33,6 +32,21 @@ public class SlicerTest {
 
         //then
         assertEquals(asList("przyjaciel", "przyjaciel", "elo", "siema"), result);
+    }
+
+    @Test
+    public void shouldSliceSentenceToFileNames(){
+        //given
+        SoundLibraryContent.inputLibrary("E:\\Dokumenty\\PracaInz\\");
+        SentenceSlicer slicer = new SentenceSlicer();
+
+        //when
+        ArrayList<String> sliced = slicer.sliceText("przyjaciel, przyja");
+
+
+        //then
+        assertEquals(asList("przy","ja","ciel","przy","ja"), sliced);
+
     }
 
 }

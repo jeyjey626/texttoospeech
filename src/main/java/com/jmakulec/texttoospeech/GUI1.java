@@ -2,6 +2,7 @@ package com.jmakulec.texttoospeech;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -16,15 +17,28 @@ public class GUI1 {
         SoundLibraryContent.inputLibrary(libURL);
 
 
-        try{
+        /*try{
             ArrayList list = WordSlicer.sliceText("przyjaciel");
             AudioInputStream pleaseWork = AudioAppender.appendFiles(list);
             AudioFilePlayer.playWord(pleaseWork);
             System.out.println(WordSlicer.sliceText("przyjaciel"));
         } catch (Exception e) {
             e.printStackTrace();
+        }*/
+
+
+        ArrayList<String> sliced = SentenceSlicer.sliceText("przyjaciel przy");
+
+
+        for (String s:sliced){
+            try {
+                AudioFilePlayer.playWord(AudioAppender.appendFiles(WordSlicer.sliceText(s)));
+            } catch (IOException | UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            }
         }
 
+        System.out.println();
 
         //System.out.println(SoundLibraryContent.getFileMap());
 

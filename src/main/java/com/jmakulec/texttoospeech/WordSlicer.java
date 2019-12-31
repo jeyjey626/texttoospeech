@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class WordSlicer {
 
+//todo jednosylabowe? 
 
-
-    public static ArrayList sliceText(String input) {
+    public static ArrayList<String> sliceText(String input) {
 
         String workable = input;
         int startPoint = 0;
