@@ -6,7 +6,7 @@ import java.util.stream.*;
 import org.apache.commons.io.FilenameUtils;
 
 public class SoundLibraryContent {
-    private static final String libURL =  "E:\\Dokumenty\\PracaInz\\";
+    private static final String libURL =  "E:\\Dokumenty\\PracaInz\\soundfiles\\";
     private static File folder; //dir of our library
 
     private static Map<String, File> fileMap; // todo: should it be a hash set?

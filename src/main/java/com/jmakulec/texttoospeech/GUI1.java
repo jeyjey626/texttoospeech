@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class GUI1 {
     private JFrame frame;
-    private static final String libURL =  "E:\\Dokumenty\\PracaInz\\";
+    private static final String libURL =  "E:\\Dokumenty\\PracaInz\\soundfiles\\";
     private static boolean done = false;
     public static void main(String[] args) {
 

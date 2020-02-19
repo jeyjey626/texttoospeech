@@ -11,9 +11,16 @@ import java.util.ArrayList;
 public class SlicerTest {
 
     @Test
+    public void shouldSliceOneSyllables(){
+        SoundLibraryContent.inputLibrary("E:\\Dokumenty\\PracaInz\\soundfiles\\");
+        ArrayList result = WordSlicer.sliceText("przy");
+        assertEquals(asList("przy"), result);
+    }
+
+    @Test
     public void shouldSliceText(){
         //given
-        SoundLibraryContent.inputLibrary("E:\\Dokumenty\\PracaInz\\");
+        SoundLibraryContent.inputLibrary("E:\\Dokumenty\\PracaInz\\soundfiles\\");
 
         //when
         ArrayList result = WordSlicer.sliceText("przyjaciel");
@@ -32,21 +39,6 @@ public class SlicerTest {
 
         //then
         assertEquals(asList("przyjaciel", "przyjaciel", "elo", "siema"), result);
-    }
-
-    @Test
-    public void shouldSliceSentenceToFileNames(){
-        //given
-        SoundLibraryContent.inputLibrary("E:\\Dokumenty\\PracaInz\\");
-        SentenceSlicer slicer = new SentenceSlicer();
-
-        //when
-        ArrayList<String> sliced = slicer.sliceText("przyjaciel, przyja");
-
-
-        //then
-        assertEquals(asList("przy","ja","ciel","przy","ja"), sliced);
-
     }
 
 }
