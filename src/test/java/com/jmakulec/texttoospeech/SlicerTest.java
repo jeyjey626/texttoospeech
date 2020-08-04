@@ -23,10 +23,10 @@ public class SlicerTest {
         SoundLibraryContent.inputLibrary("E:\\Dokumenty\\PracaInz\\soundfiles\\");
 
         //when
-        ArrayList result = WordSlicer.sliceText("przyjaciel");
+        ArrayList result = WordSlicer.sliceText("przy");
 
         //then
-        assertEquals(asList("przy","ja","ciel"), result);
+        assertEquals(asList("przy"), result);
     }
 
     @Test

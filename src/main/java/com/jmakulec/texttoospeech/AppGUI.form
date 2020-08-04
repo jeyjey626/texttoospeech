@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.jmakulec.texttoospeech.AppGUI">
+  <grid id="27dc6" binding="rootPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="500" height="800"/>
+    </constraints>
+    <properties>
+      <minimumSize width="476" height="600"/>
+      <opaque value="false"/>
+    </properties>
+    <border type="empty">
+      <size top="0" left="10" bottom="10" right="10"/>
+    </border>
+    <children>
+      <grid id="d1ced" binding="entryPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="4076c" binding="OptionsPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints border-constraint="North"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="2466f" class="javax.swing.JRadioButton" binding="textEntry">
+                <constraints/>
+                <properties>
+                  <enabled value="true"/>
+                  <text value="Wprowadzanie tekstu"/>
+                </properties>
+              </component>
+              <component id="21feb" class="javax.swing.JRadioButton" binding="fileSelect">
+                <constraints/>
+                <properties>
+                  <text value="Tekst z pliku .pdf lub.txt"/>
+                </properties>
+              </component>
+              <component id="b9413" class="javax.swing.JCheckBox" binding="analysis">
+                <constraints/>
+                <properties>
+                  <text value="Analiza pokrycia z biblioteką"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="5d942" binding="entryValuePanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="Center"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="88534" binding="fileInputPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints border-constraint="North"/>
+                <properties/>
+                <border type="empty" title="Wybierz plik"/>
+                <children>
+                  <component id="12f1" class="javax.swing.JTextField" binding="fileInputField">
+                    <constraints border-constraint="Center"/>
+                    <properties/>
+                  </component>
+                  <component id="cb6b7" class="javax.swing.JButton" binding="fileChooserButton">
+                    <constraints border-constraint="East"/>
+                    <properties>
+                      <text value="..."/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="bc895" binding="textInputPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints border-constraint="Center"/>
+                <properties/>
+                <border type="empty" title="Wprowadź tekst"/>
+                <children>
+                  <scrollpane id="b03a6">
+                    <constraints border-constraint="Center"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="3f587" class="javax.swing.JTextArea" binding="inputTextArea">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </scrollpane>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="e5288" binding="navigationPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="South"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="470ff" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints border-constraint="Center"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="1823d" class="javax.swing.JButton" binding="playButton">
+                    <constraints/>
+                    <properties>
+                      <text value="Odtwórz"/>
+                    </properties>
+                  </component>
+                  <component id="2db5c" class="javax.swing.JButton" binding="stopButton">
+                    <constraints/>
+                    <properties>
+                      <text value="Stop"/>
+                    </properties>
+                  </component>
+                  <component id="ded2f" class="javax.swing.JButton" binding="cleanButton">
+                    <constraints/>
+                    <properties>
+                      <text value="Wyczyść"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="8ca7d" class="javax.swing.JMenuBar" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="North"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="3117b" class="javax.swing.JMenu" binding="optionsMenu" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints border-constraint="West"/>
+            <properties>
+              <text value="Aplikacja..."/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="b1f73" class="javax.swing.JMenuItem" binding="libraryButton">
+                <constraints/>
+                <properties>
+                  <text value="Zmień folder z biblioteką dźwięków"/>
+                </properties>
+              </component>
+              <component id="34c3" class="javax.swing.JMenuItem">
+                <constraints/>
+                <properties>
+                  <text value="O Aplikacji"/>
+                </properties>
+              </component>
+              <component id="b7088" class="javax.swing.JMenuItem">
+                <constraints/>
+                <properties>
+                  <text value="Zamknij Alt+F4"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+  <buttonGroups>
+    <group name="inputOptionGroup">
+      <member id="21feb"/>
+      <member id="2466f"/>
+    </group>
+  </buttonGroups>
+</form>

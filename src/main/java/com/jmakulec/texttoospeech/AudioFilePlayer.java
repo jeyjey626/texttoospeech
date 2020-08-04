@@ -6,21 +6,43 @@ import java.io.IOException;
 import static javax.sound.sampled.AudioSystem.getAudioInputStream;
 import static javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED;
 
-public class AudioFilePlayer {
+public class AudioFilePlayer extends Thread{
 
-    private static byte[] buffer = new byte[65536];
-    public static void playWord(AudioInputStream inputStream){
+    public static volatile boolean runFlag = true;
+
+    public SourceDataLine playingLine;
+
+    private static final byte[] buffer = new byte[65536];
+    private static AudioInputStream inputStream;
+
+    @Override
+    public void run() {
+        playFile(inputStream);
+    }
+
+    public static void setPlayableInput(AudioInputStream inputStream) {
+        AudioFilePlayer.inputStream = inputStream;
+    }
+
+    public void playFile(AudioInputStream inputStream){
         try{
          final AudioFormat outFormat =  getOutFormat(inputStream.getFormat());
          final DataLine.Info info = new DataLine.Info(SourceDataLine.class, outFormat);
 
          try(final  SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info)) {
              if (line != null){
-                 line.open(outFormat);
+                 this.playingLine = line;
+                 playingLine.open(outFormat);
+                 playingLine.start();
+                 stream(getAudioInputStream(outFormat, inputStream), playingLine);
+                 playingLine.drain();
+                 playingLine.stop();
+                 /*line.open(outFormat);
                  line.start();
                  stream(getAudioInputStream(outFormat, inputStream), line);
                  line.drain();
                  line.stop();
+                 runFlag = false;*/
              }
          } catch (LineUnavailableException | IOException e) {
              e.printStackTrace();
@@ -39,5 +61,9 @@ public class AudioFilePlayer {
         for (int n = 0; n != -1; n = in.read(buffer, 0, buffer.length)) {
             line.write(buffer, 0, n);
         }
+    }
+
+    public void cancelPlaying() {
+        if (playingLine != null) playingLine.stop();
     }
 }

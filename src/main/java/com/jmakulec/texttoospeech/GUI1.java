@@ -10,35 +10,48 @@ public class GUI1 {
     private JFrame frame;
     private static final String libURL =  "E:\\Dokumenty\\PracaInz\\soundfiles\\";
     private static boolean done = false;
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, UnsupportedAudioFileException {
+
 
         //SwingUtilities.invokeLater(GUI1::new);
 
         SoundLibraryContent.inputLibrary(libURL);
 
 
+
+
+
+
         /*try{
             ArrayList list = WordSlicer.sliceText("przyjaciel");
             AudioInputStream pleaseWork = AudioAppender.appendFiles(list);
-            AudioFilePlayer.playWord(pleaseWork);
+            AudioFilePlayer.playFile(pleaseWork);
             System.out.println(WordSlicer.sliceText("przyjaciel"));
         } catch (Exception e) {
             e.printStackTrace();
         }*/
 
 
-        ArrayList<String> sliced = SentenceSlicer.sliceText("przyjaciel przy");
+        ArrayList<String> sliced = SentenceSlicer.sliceText("lipa lipa pali lipa");
+        System.out.println(sliced);
 
 
+        ArrayList<AudioInputStream> wordFileList = new ArrayList<>();
         for (String s:sliced){
             try {
-                AudioFilePlayer.playWord(AudioAppender.appendFiles(WordSlicer.sliceText(s)));
+                wordFileList.add(AudioAppender.appendFiles(WordSlicer.sliceText(s)));
+                //AudioFilePlayer.playFile(AudioAppender.appendFiles(WordSlicer.sliceText(s)));
             } catch (IOException | UnsupportedAudioFileException e) {
                 e.printStackTrace();
             }
         }
+        // AudioFilePlayer.playFile( AudioAppender.appendWords(wordFileList) );
+
 
         System.out.println();
+
+       // JFrame appFrame = new app();
+        // appFrame.setVisible(true);
 
         //System.out.println(SoundLibraryContent.getFileMap());
 
@@ -67,7 +80,7 @@ public class GUI1 {
 
             AudioInputStream tempAppend = appender(clip1, clip2); //TODO appending all the sounds loop function
             AudioInputStream appendedFiles = appender(tempAppend, clip3);
-            AudioFilePlayer.playWord(appendedFiles);
+            AudioFilePlayer.playFile(appendedFiles);
 
             AudioSystem.write(appendedFiles,
                     AudioFileFormat.Type.WAVE,
@@ -90,7 +103,9 @@ public class GUI1 {
 
 
     private GUI1(){
-        initUI();
+
+        // initUI();
+
     }
 
     private void initUI(){
