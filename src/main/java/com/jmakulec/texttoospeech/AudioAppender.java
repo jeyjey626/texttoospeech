@@ -3,11 +3,9 @@ package com.jmakulec.texttoospeech;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.SequenceInputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AudioAppender {
@@ -52,7 +50,7 @@ public class AudioAppender {
         return tempAppend;
     }
 
-    private static AudioInputStream appender(AudioInputStream clip1, AudioInputStream clip2) throws IOException, UnsupportedAudioFileException {
+    private static AudioInputStream appender(AudioInputStream clip1, AudioInputStream clip2) {
         return new AudioInputStream(
                 new SequenceInputStream(clip1, clip2),
                 clip1.getFormat(),

@@ -21,8 +21,8 @@ public class WordSlicer {
             if(SoundLibraryContent.isInLibrary(workable)) {
                 workableArrayList.add(workable);
                 if(isAnalysis) {
-                    if (workable.length() == 2) { if (Character.isUpperCase(workable.charAt(0)) && !Utils.OtherUtils.isVowel(workable.substring(1))) corruptedCount++; }
-                    else if (workable.length() == 1){ if (!Utils.OtherUtils.isVowel(workable)) corruptedCount++; }
+                    if (workable.length() == 2) { if (Character.isUpperCase(workable.charAt(0)) && Utils.OtherUtils.isConsonant(workable.substring(1))) corruptedCount++; }
+                    else if (workable.length() == 1){ if (Utils.OtherUtils.isConsonant(workable)) corruptedCount++; }
                     for (int i = 0; i < workable.length(); i++) {
                         if (Utils.OtherUtils.isPolishSymbol(String.valueOf(workable.charAt(i)))) polishSymbolsCount++;
                     }

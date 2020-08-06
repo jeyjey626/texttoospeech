@@ -5,7 +5,6 @@ import java.util.*;
 import java.util.stream.*;
 
 import org.apache.commons.io.FilenameUtils;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -20,10 +19,13 @@ public class SoundLibraryContent {
     }
 
     private static String libraryPath;
-    private static File folder; //dir of our library
+    private static File folder; //dir of sound library
 
-    private static Map<String, File> fileMap; // todo: should it be a hash set?
+    private static Map<String, File> fileMap; // todo: should it be a hash set? - no, files cant be named the same
 
+    // -----------------------------------------------------------------------
+    // ------------- Processing library  path to create a sound files map ------
+    // -----------------------------------------------------------------------
     public static void inputLibrary(String libURL){ //allows user to input their own library
         libraryPath = libURL;
         folder =  new File(libURL);
@@ -37,21 +39,22 @@ public class SoundLibraryContent {
         )); //creating a map of base filenames with their full paths
         }
 
+    // --------------------------------------------------------------
+    // ------------- getting Filenames from folder ------------------
+    // --------------------------------------------------------------
     public static List<String> getFileNames(){
         return Arrays.stream(Objects.requireNonNull(folder.listFiles())) //getting a stream of filenames
                 .map(file -> FilenameUtils.getBaseName(String.valueOf(file))) //getting just names for comparison
                 .collect(Collectors.toList()); //closing as list
     }
 
-    public static Map<String, File> getFileMap() {
-        return fileMap;
-    }
-
     public static boolean isInLibrary(String candidate){
         return getFileNames().contains(candidate);
     }
 
-    // saving library path to JSON
+    // --------------------------------------------------------------
+    // ------------- Saving library path to json --------------------
+    // --------------------------------------------------------------
     public static void saveLibraryPath(String inputPath) {
         JSONObject libraryDetails = new JSONObject();
         libraryDetails.put("path", inputPath);
@@ -65,7 +68,9 @@ public class SoundLibraryContent {
         }
     }
 
-    // recovering data from saved json or informing there is no such data saved / no json
+    // --------------------------------------------------------------------------------------
+    // ------------- Reading library path from json if exists, or informing otherwise -------
+    // --------------------------------------------------------------------------------------
     public static boolean isInitLibrary(){
         boolean retValue = false;
         JSONParser jsonParser = new org.json.simple.parser.JSONParser();

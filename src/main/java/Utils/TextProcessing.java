@@ -3,12 +3,12 @@ package Utils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
-import java.io.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.stream.Collectors;
 
 public class TextProcessing {
