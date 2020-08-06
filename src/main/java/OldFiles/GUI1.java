@@ -1,4 +1,8 @@
-package com.jmakulec.texttoospeech;
+package OldFiles;
+
+import com.jmakulec.texttoospeech.AudioAppender;
+import com.jmakulec.texttoospeech.SoundLibraryContent;
+import com.jmakulec.texttoospeech.WordSlicer;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -32,14 +36,14 @@ public class GUI1 {
         }*/
 
 
-        ArrayList<String> sliced = SentenceSlicer.sliceText("lipa lipa pali lipa");
+        ArrayList<String> sliced = Utils.TextProcessing.sliceText("lipa lipa pali lipa");
         System.out.println(sliced);
 
 
         ArrayList<AudioInputStream> wordFileList = new ArrayList<>();
         for (String s:sliced){
             try {
-                wordFileList.add(AudioAppender.appendFiles(WordSlicer.sliceText(s)));
+                wordFileList.add(AudioAppender.appendFiles(WordSlicer.sliceText(s, false)));
                 //AudioFilePlayer.playFile(AudioAppender.appendFiles(WordSlicer.sliceText(s)));
             } catch (IOException | UnsupportedAudioFileException e) {
                 e.printStackTrace();

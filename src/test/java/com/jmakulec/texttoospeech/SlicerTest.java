@@ -13,7 +13,7 @@ public class SlicerTest {
     @Test
     public void shouldSliceOneSyllables(){
         SoundLibraryContent.inputLibrary("E:\\Dokumenty\\PracaInz\\soundfiles\\");
-        ArrayList result = WordSlicer.sliceText("przy");
+        ArrayList result = WordSlicer.sliceText("przy", false);
         assertEquals(asList("przy"), result);
     }
 
@@ -23,7 +23,7 @@ public class SlicerTest {
         SoundLibraryContent.inputLibrary("E:\\Dokumenty\\PracaInz\\soundfiles\\");
 
         //when
-        ArrayList result = WordSlicer.sliceText("przy");
+        ArrayList result = WordSlicer.sliceText("przy", false);
 
         //then
         assertEquals(asList("przy"), result);
@@ -32,10 +32,10 @@ public class SlicerTest {
     @Test
     public void shouldSliceSentences(){
         //given
-        SentenceSlicer slicer = new SentenceSlicer();
+        //SentenceSlicer slicer = new SentenceSlicer();
 
         //when
-        ArrayList result = slicer.sliceText("przyjaciel ';';'; .,przyjaciel elo siema . /*-");
+        ArrayList result = Utils.TextProcessing.sliceText("przyjaciel ';';'; .,przyjaciel elo siema . /*-");
 
         //then
         assertEquals(asList("przyjaciel", "przyjaciel", "elo", "siema"), result);

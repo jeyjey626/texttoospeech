@@ -8,14 +8,16 @@
       <minimumSize width="476" height="600"/>
       <opaque value="false"/>
     </properties>
-    <border type="empty">
+    <border type="none">
       <size top="0" left="10" bottom="10" right="10"/>
     </border>
     <children>
       <grid id="d1ced" binding="entryPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="Center"/>
         <properties/>
-        <border type="none"/>
+        <border type="empty">
+          <size top="5" left="10" bottom="10" right="10"/>
+        </border>
         <children>
           <grid id="4076c" binding="OptionsPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
             <constraints border-constraint="North"/>
@@ -51,7 +53,7 @@
               <grid id="88534" binding="fileInputPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <constraints border-constraint="North"/>
                 <properties/>
-                <border type="empty" title="Wybierz plik"/>
+                <border type="bevel-raised" title="Wybierz plik do odtworzenia"/>
                 <children>
                   <component id="12f1" class="javax.swing.JTextField" binding="fileInputField">
                     <constraints border-constraint="Center"/>
@@ -68,12 +70,12 @@
               <grid id="bc895" binding="textInputPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <constraints border-constraint="Center"/>
                 <properties/>
-                <border type="empty" title="Wprowadź tekst"/>
+                <border type="bevel-raised" title="Wprowadź tekst do odtworzenia"/>
                 <children>
                   <scrollpane id="b03a6">
                     <constraints border-constraint="Center"/>
                     <properties/>
-                    <border type="none"/>
+                    <border type="etched"/>
                     <children>
                       <component id="3f587" class="javax.swing.JTextArea" binding="inputTextArea">
                         <constraints/>

@@ -1,5 +1,9 @@
 package com.jmakulec.texttoospeech;
 
+
+import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.skin.*;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
@@ -13,6 +17,8 @@ import java.util.ArrayList;
 
 public class AppGUI {
     // declarations
+    private double totalCorruptedLetterCount = 0;
+    private int totalPolishSymbolsCount = 0;
     private String fileToPlayPath;
     private JFrame frame;
     public AudioFilePlayer playingThread;
@@ -37,15 +43,29 @@ public class AppGUI {
     private JMenuItem libraryButton;
 
     public AppGUI() {
+
+        /*try {
+            UIManager.setLookAndFeel(new SubstanceDustLookAndFeel());
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }*///SwingUtilities.updateComponentTreeUI(frame);
+
         playingThread = new AudioFilePlayer();
         // SoundLibraryContent.inputLibrary("E:\\Dokumenty\\PracaInz\\soundfiles\\"); // - library added in code
         frame = new JFrame("Syntezer mowy");
         frame.setContentPane(rootPanel); //setting the panel from GUIform in the frame
-        frame.pack();
         frame.setMinimumSize(new Dimension(450, 600));
         frame.setLocationRelativeTo(null); // centering the frame
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        SubstanceCortex.GlobalScope.setSkin(new CremeCoffeeSkin());
+        SwingUtilities.updateComponentTreeUI(frame);
+
+        //setting initial option -> text input
+        textEntry.setSelected(true);
+
+        frame.pack();
         frame.setVisible(true);
+
 
         if (!SoundLibraryContent.isInitLibrary()) {
             while (SoundLibraryContent.isFileMapEmpty()) {
@@ -69,14 +89,24 @@ public class AppGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (fileSelect.isSelected()) {
-                    playSound(PDFReader.readText(new File(fileToPlayPath)));
+                    File file = new File(fileToPlayPath);
+                    if (file.getName().contains(".txt") || file.getName().contains(".text")) playSound(Utils.TextProcessing.txtFileProcessor(file));
+                    else if(file.getName().contains(".pdf")) playSound(Utils.TextProcessing.pdfProcessor(file));
+                    else JOptionPane.showMessageDialog(frame,
+                                "Zły format pliku. \nDozwolone są jedynie pliki .txt i .pdf",
+                                "Błąd",
+                                JOptionPane.ERROR_MESSAGE);
                 }
                 else if (inputTextArea.getText().length() != 0) {
-                    playSound(SentenceSlicer.sliceText(inputTextArea.getText()));
+                    playSound(Utils.TextProcessing.sliceText(inputTextArea.getText()));
                 }
             }
         });
-        cleanButton.addActionListener(e -> inputTextArea.setText(""));
+        cleanButton.addActionListener(e -> {
+            inputTextArea.setText("");
+            fileToPlayPath = "";
+            fileInputField.setText("");
+        });
         stopButton.addActionListener(e -> {
            if (playingThread.isAlive()) playingThread.cancelPlaying();
         });
@@ -89,7 +119,6 @@ public class AppGUI {
             fileChooser.setDialogTitle("Wybierz plik do odtworzenia");
             FileNameExtensionFilter extensionFilter = new FileNameExtensionFilter("Pliki tekstowe i PDF", "txt", "text", "pdf"); // creating filter allowing only pdf and txt
             fileChooser.setFileFilter(extensionFilter);
-
 
             int state = fileChooser.showOpenDialog(frame);
 
@@ -109,6 +138,8 @@ public class AppGUI {
         inputTextArea.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                System.out.println("yup");
+                textEntry.setSelected(true);
                 fileInputField.setEditable(false);
                 inputTextArea.setEditable(true);
             }
@@ -116,14 +147,27 @@ public class AppGUI {
     }
 
     public static void main(String[] args) {
-        new AppGUI();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                new AppGUI();
+            }
+        };
+        SwingUtilities.invokeLater(runnable);
+
     }
     
     private void playSound(ArrayList<String> input) {
+        totalCorruptedLetterCount = 0;
+        totalPolishSymbolsCount = 0;
         ArrayList<AudioInputStream> wordFileList = new ArrayList<>();
         for (String s: input){
             try {
-                wordFileList.add(AudioAppender.appendFiles(WordSlicer.sliceText(s)));
+                wordFileList.add(AudioAppender.appendFiles(WordSlicer.sliceText(s, analysis.isSelected())));
+                if (analysis.isSelected()) {
+                    totalCorruptedLetterCount += WordSlicer.corruptedCount;
+                    totalPolishSymbolsCount += WordSlicer.polishSymbolsCount;
+                }
                 //AudioFilePlayer.playFile(AudioAppender.appendFiles(WordSlicer.sliceText(s)));
             } catch (IOException | UnsupportedAudioFileException exception) {
                 exception.printStackTrace();
@@ -136,6 +180,13 @@ public class AppGUI {
             playingThread.start();
         } catch (IOException | UnsupportedAudioFileException exception) {
             exception.printStackTrace();
+        }
+        if (analysis.isSelected()) {
+            double totalLetterCount = input.stream().mapToInt(String::length).sum();
+            Double coveragePercent = totalCorruptedLetterCount !=0 ? 100.00 - totalCorruptedLetterCount/(totalLetterCount - totalPolishSymbolsCount) * 100 : 0;
+            coveragePercent = Utils.OtherUtils.round(coveragePercent, 2);
+            JOptionPane.showMessageDialog(frame,
+                    "Biblioteka dźwięków pokrywa około " + coveragePercent + "% odtwarzanego tekstu");
         }
     }
 
