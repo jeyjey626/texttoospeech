@@ -20,11 +20,12 @@ public class WordSlicer {
         while (!workable.equals("")){
             if(SoundLibraryContent.isInLibrary(workable)) {
                 workableArrayList.add(workable);
-                if (isAnalysis && workable.length() == 2) {
-                    if (Character.isUpperCase(workable.charAt(0)) && !Utils.OtherUtils.isVowel(workable.substring(1))) corruptedCount++;
-                }
-                else if (isAnalysis && workable.length() == 1){
-                    if (!Utils.OtherUtils.isVowel(workable)) corruptedCount++;
+                if(isAnalysis) {
+                    if (workable.length() == 2) { if (Character.isUpperCase(workable.charAt(0)) && !Utils.OtherUtils.isVowel(workable.substring(1))) corruptedCount++; }
+                    else if (workable.length() == 1){ if (!Utils.OtherUtils.isVowel(workable)) corruptedCount++; }
+                    for (int i = 0; i < workable.length(); i++) {
+                        if (Utils.OtherUtils.isPolishSymbol(String.valueOf(workable.charAt(i)))) polishSymbolsCount++;
+                    }
                 }
                 startPoint = workableArrayList.stream().mapToInt(String::length).sum();
                 stopPoint = input.length();
@@ -35,6 +36,7 @@ public class WordSlicer {
                 stopPoint --;
             }
         }
+        polishSymbolsCount = polishSymbolsCount != 0 ? polishSymbolsCount/2 : 0;
         return workableArrayList;
     }
 }

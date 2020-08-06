@@ -22,4 +22,10 @@ public class OtherUtils {
     public static boolean isVowel(String s) {
         return vowelSet.contains(s);
     }
+
+    // --------------------------------------------------------------
+    // ------------- polish symbols recognizer-----------------------
+    // --------------------------------------------------------------
+    private static final HashSet<String> polishSet = new HashSet<>(Arrays.asList("A", "C", "E","L","N","O","S","X","Z"));
+    public static boolean isPolishSymbol(String s) { return polishSet.contains(s); }
 }

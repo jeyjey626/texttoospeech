@@ -41,6 +41,7 @@ public class AppGUI {
     private JButton cleanButton;
     private JMenu optionsMenu;
     private JMenuItem libraryButton;
+    private JPanel radioPanel;
 
     public AppGUI() {
 
@@ -54,7 +55,7 @@ public class AppGUI {
         // SoundLibraryContent.inputLibrary("E:\\Dokumenty\\PracaInz\\soundfiles\\"); // - library added in code
         frame = new JFrame("Syntezer mowy");
         frame.setContentPane(rootPanel); //setting the panel from GUIform in the frame
-        frame.setMinimumSize(new Dimension(450, 600));
+        frame.setMinimumSize(new Dimension(500, 650));
         frame.setLocationRelativeTo(null); // centering the frame
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         SubstanceCortex.GlobalScope.setSkin(new CremeCoffeeSkin());
