@@ -43,20 +43,17 @@ public class AppGUI {
     private JMenuItem aboutButton;
 
     public AppGUI() {
-
-        /*try {
-            UIManager.setLookAndFeel(new SubstanceDustLookAndFeel());
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }*///SwingUtilities.updateComponentTreeUI(frame);
-
+        //init the Thread for sound
         playingThread = new AudioFilePlayer();
-        // SoundLibraryContent.inputLibrary("E:\\Dokumenty\\PracaInz\\soundfiles\\"); // - library added in code
+
+        //app frame init
         frame = new JFrame("Syntezer mowy");
         frame.setContentPane(rootPanel); //setting the panel from GUIform in the frame
         frame.setMinimumSize(new Dimension(500, 650));
         frame.setLocationRelativeTo(null); // centering the frame
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        //setting a look and feel
         SubstanceCortex.GlobalScope.setSkin(new CremeCoffeeSkin());
         SwingUtilities.updateComponentTreeUI(frame);
 
@@ -66,7 +63,7 @@ public class AppGUI {
         frame.pack();
         frame.setVisible(true);
 
-
+        //checking if there was library saved in json, if not -> popup window to choose library source
         if (!SoundLibraryContent.isInitLibrary()) {
             while (SoundLibraryContent.isFileMapEmpty()) {
                 setLibrary();
@@ -85,6 +82,7 @@ public class AppGUI {
             }
         }
 
+        //---------------------------------------play sound button listener---------------------------------------
         playButton.addActionListener(e -> {
             if (fileSelect.isSelected()) {
                 File file = new File(fileToPlayPath);
@@ -99,14 +97,20 @@ public class AppGUI {
                 playSound(Utils.TextProcessing.sliceText(inputTextArea.getText()));
             }
         });
+
+        //---------------------------------------clean all button listener---------------------------------------
         cleanButton.addActionListener(e -> {
             inputTextArea.setText("");
             fileToPlayPath = "";
             fileInputField.setText("");
         });
+
+        //---------------------------------------stop sound button listener---------------------------------------
         stopButton.addActionListener(e -> {
            if (playingThread.isAlive()) playingThread.cancelPlaying();
         });
+
+        //---------------------------------------set library manu button listener---------------------------------------
         libraryButton.addActionListener(e -> setLibrary());
         fileChooserButton.addActionListener(e -> {
             fileSelect.setSelected(true);
@@ -122,6 +126,8 @@ public class AppGUI {
                 fileInputField.setText(fileChooser.getSelectedFile().getAbsolutePath());
             }
         });
+
+        //--------------------------------------file/text input listeners with blocking other inputs-------------------------
         textEntry.addActionListener(e -> {
             fileInputField.setEditable(false);
             inputTextArea.setEditable(true);
@@ -139,57 +145,66 @@ public class AppGUI {
                 inputTextArea.setEditable(true);
             }
         });
+
+        //---------------------------------------about app menu button listener---------------------------------------
         aboutButton.addActionListener(e -> JOptionPane.showMessageDialog(frame,
                 OtherUtils.aboutAppTxt));
     }
 
     public static void main(String[] args) {
+        // invoking as runnable (swing)
         Runnable runnable = AppGUI::new;
         SwingUtilities.invokeLater(runnable);
-
     }
-    
+
+    //--------------------------------------------------------------------------------------------------------
+    //-------------------------------------------playing sound function---------------------------------------
+    //--------------------------------------------------------------------------------------------------------
     private void playSound(ArrayList<String> input) {
-        // declarations
+        // declarations for total analysis counts
         double totalCorruptedLetterCount = 0;
         int totalPolishSymbolsCount = 0;
         ArrayList<AudioInputStream> wordFileList = new ArrayList<>();
         for (String s: input){
+            //iterating on every string/word from input list, slicing it into filenames and saving into wordFileList
             try {
                 wordFileList.add(AudioAppender.appendFiles(WordSlicer.sliceText(s, analysis.isSelected())));
-                if (analysis.isSelected()) {
+                if (analysis.isSelected()) { //updating analytic variables
                     totalCorruptedLetterCount += WordSlicer.corruptedCount;
                     totalPolishSymbolsCount += WordSlicer.polishSymbolsCount;
                 }
                 //AudioFilePlayer.playFile(AudioAppender.appendFiles(WordSlicer.sliceText(s)));
-            } catch (IOException | UnsupportedAudioFileException exception) {
-                exception.printStackTrace();
-            }
+            } catch (IOException | UnsupportedAudioFileException exception) { exception.printStackTrace(); }
         }
         try {
+            //setting input by appending all the sounds from fileWordList
             AudioFilePlayer.setPlayableInput( AudioAppender.appendWords(wordFileList) );
+            //canceling/stopping playing if the sound thread is still playing previous sound
             if (playingThread.isAlive()) playingThread.cancelPlaying();
+            //creating new instance of playing thread and running it
             playingThread = new AudioFilePlayer();
             playingThread.start();
-        } catch (IOException | UnsupportedAudioFileException exception) {
-            exception.printStackTrace();
-        }
-        if (analysis.isSelected()) {
+        } catch (IOException | UnsupportedAudioFileException exception) { exception.printStackTrace(); }
+        if (analysis.isSelected()) { //popup message window with library coverage if analysis checkbox was selected
             double totalLetterCount = input.stream().mapToInt(String::length).sum();
-            double coveragePercent = totalCorruptedLetterCount !=0 ? 100.00 - totalCorruptedLetterCount /(totalLetterCount - totalPolishSymbolsCount) * 100 : 0;
+            double coveragePercent = totalCorruptedLetterCount !=0 ? 100.00 - totalCorruptedLetterCount /(totalLetterCount - totalPolishSymbolsCount) * 100 : 100;
             coveragePercent = Utils.OtherUtils.round(coveragePercent, 2);
             JOptionPane.showMessageDialog(frame,
                     "Biblioteka dźwięków pokrywa około " + coveragePercent + "% odtwarzanego tekstu");
         }
     }
 
+    //--------------------------------------------------------------------------------------------------------
+    //-------------------------------------------set Library file chooser---------------------------------------
+    //--------------------------------------------------------------------------------------------------------
     private void setLibrary() {
         JFileChooser libraryChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         libraryChooser.setDialogTitle("Wybierz ścieżkę biblioteki dźwięków");
-        libraryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        libraryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); //only directories
 
         int returnVal = libraryChooser.showDialog(frame, "Wybierz");
         if (returnVal == JFileChooser.APPROVE_OPTION) {
+            //processing input directory -> getting a file map and saving library path to json
             SoundLibraryContent.inputLibrary(libraryChooser.getSelectedFile().getAbsolutePath() + "\\");
             SoundLibraryContent.saveLibraryPath(libraryChooser.getSelectedFile().getAbsolutePath() + "\\");
         }

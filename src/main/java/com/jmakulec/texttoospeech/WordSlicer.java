@@ -4,18 +4,15 @@ import java.util.ArrayList;
 
 public class WordSlicer {
     public static int polishSymbolsCount = 0;
-    public static int corruptedCount = 0; // for counting how many letters excepting
+    public static int corruptedCount = 0; // for counting how many characters are
 
     public static ArrayList<String> sliceText(String input, boolean isAnalysis) {
-        //todo polish letter count
         corruptedCount = 0;
         polishSymbolsCount = 0;
         String workable = input;
         int startPoint = 0;
         int stopPoint = input.length();
-        //int totalLetterCount; // for counting % of letters covered by the library
         ArrayList<String> workableArrayList = new ArrayList<>();
-
 
         while (!workable.equals("")){
             if(SoundLibraryContent.isInLibrary(workable)) {
