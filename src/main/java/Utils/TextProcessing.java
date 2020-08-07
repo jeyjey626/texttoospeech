@@ -15,10 +15,7 @@ public class TextProcessing {
     // --------------------------------------------------------------
     // ------------- Reading and processing txt Files ---------------
     // --------------------------------------------------------------
-    private static String txtString;
-
-    public static ArrayList<String> txtFileProcessor(File file) {
-        ArrayList<String> records;
+    public static String txtFileReader(File file) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine();
@@ -31,6 +28,14 @@ public class TextProcessing {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return txtString;
+    }
+
+    private static String txtString;
+
+    public static ArrayList<String> txtFileProcessor(File file) {
+        ArrayList<String> records;
+        txtFileReader(file);
         records = sliceText(polishSymbolsProcessing(txtString));
         return records;
     }
@@ -39,8 +44,22 @@ public class TextProcessing {
     // --------------------------------------------------------------
     // ------------- Reading and processing pdf Files ---------------
     // --------------------------------------------------------------
+    public static String processPDF(File file) {
+        String ret = "";
+        try {
+            document = PDDocument.load(file);
+            PDFTextStripper pdfStripper = new PDFTextStripper();
+            ret = pdfStripper.getText(document);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+
     public static PDDocument document;
-    private static String pdfText;
+    public static String pdfText;
     public static ArrayList<String> pdfProcessor(File file){
         try {
             document = PDDocument.load(file);

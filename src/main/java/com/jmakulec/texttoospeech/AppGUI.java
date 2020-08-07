@@ -2,6 +2,7 @@ package com.jmakulec.texttoospeech;
 
 
 import Utils.OtherUtils;
+import Utils.TextProcessing;
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.skin.*;
 
@@ -65,6 +66,7 @@ public class AppGUI {
 
         //checking if there was library saved in json, if not -> popup window to choose library source
         if (!SoundLibraryContent.isInitLibrary()) {
+            setLibrary();
             while (SoundLibraryContent.isFileMapEmpty()) {
                 setLibrary();
                 if (SoundLibraryContent.getLibraryPath() == null) {
@@ -86,8 +88,14 @@ public class AppGUI {
         playButton.addActionListener(e -> {
             if (fileSelect.isSelected()) {
                 File file = new File(fileToPlayPath);
-                if (file.getName().contains(".txt") || file.getName().contains(".text")) playSound(Utils.TextProcessing.txtFileProcessor(file));
-                else if(file.getName().contains(".pdf")) playSound(Utils.TextProcessing.pdfProcessor(file));
+                if (file.getName().contains(".txt") || file.getName().contains(".text")) {
+                    inputTextArea.setText(Utils.TextProcessing.txtFileReader(file));
+                    playSound(Utils.TextProcessing.txtFileProcessor(file));
+                }
+                else if(file.getName().contains(".pdf")) {
+                    inputTextArea.setText(TextProcessing.processPDF(file));
+                    playSound(Utils.TextProcessing.pdfProcessor(file));
+                }
                 else JOptionPane.showMessageDialog(frame,
                             "Zły format pliku. \nDozwolone są jedynie pliki .txt i .pdf",
                             "Błąd",
