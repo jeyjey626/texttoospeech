@@ -28,7 +28,7 @@ public class GUI1 {
 
         /*try{
             ArrayList list = WordSlicer.sliceText("przyjaciel");
-            AudioInputStream pleaseWork = AudioAppender.appendFiles(list);
+            AudioInputStream pleaseWork = AudioAppender.appendWordFragments(list);
             AudioFilePlayer.playFile(pleaseWork);
             System.out.println(WordSlicer.sliceText("przyjaciel"));
         } catch (Exception e) {
@@ -43,8 +43,8 @@ public class GUI1 {
         ArrayList<AudioInputStream> wordFileList = new ArrayList<>();
         for (String s:sliced){
             try {
-                wordFileList.add(AudioAppender.appendFiles(WordSlicer.sliceText(s, false)));
-                //AudioFilePlayer.playFile(AudioAppender.appendFiles(WordSlicer.sliceText(s)));
+                wordFileList.add(AudioAppender.appendWordFragments(WordSlicer.sliceText(s, false)));
+                //AudioFilePlayer.playFile(AudioAppender.appendWordFragments(WordSlicer.sliceText(s)));
             } catch (IOException | UnsupportedAudioFileException e) {
                 e.printStackTrace();
             }

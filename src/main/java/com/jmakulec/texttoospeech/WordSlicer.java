@@ -31,16 +31,16 @@ public class WordSlicer {
                 workable = input.substring(startPoint);
             }
             else {
-                if (workable.length() == 0) {
-                    startPoint = workableArrayList.stream().mapToInt(String::length).sum();
+                if (workable.length() == 1) {
+                    startPoint = workableArrayList.stream().mapToInt(String::length).sum() + 1;
                     stopPoint = input.length();
                     workable = input.substring(startPoint);
+                    if (isAnalysis) corruptedCount++;
                 }
                 else {
-                    workable = input.substring(startPoint, stopPoint );
                     stopPoint --;
+                    workable = input.substring(startPoint, stopPoint );
                 }
-                //todo if workable.length == 1 and is not in lib skip check if working
             }
         }
         polishSymbolsCount = polishSymbolsCount != 0 ? polishSymbolsCount/2 : 0;

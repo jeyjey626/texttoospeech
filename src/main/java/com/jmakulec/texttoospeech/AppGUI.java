@@ -176,12 +176,12 @@ public class AppGUI {
         for (String s: input){
             //iterating on every string/word from input list, slicing it into filenames and saving into wordFileList
             try {
-                wordFileList.add(AudioAppender.appendFiles(WordSlicer.sliceText(s, analysis.isSelected())));
+                wordFileList.add(AudioAppender.appendWordFragments(WordSlicer.sliceText(s, analysis.isSelected())));
                 if (analysis.isSelected()) { //updating analytic variables
                     totalCorruptedLetterCount += WordSlicer.corruptedCount;
                     totalPolishSymbolsCount += WordSlicer.polishSymbolsCount;
                 }
-                //AudioFilePlayer.playFile(AudioAppender.appendFiles(WordSlicer.sliceText(s)));
+                //AudioFilePlayer.playFile(AudioAppender.appendWordFragments(WordSlicer.sliceText(s)));
             } catch (IOException | UnsupportedAudioFileException exception) { exception.printStackTrace(); }
         }
         try {

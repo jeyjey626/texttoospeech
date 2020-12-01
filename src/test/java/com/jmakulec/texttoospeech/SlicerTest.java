@@ -35,7 +35,7 @@ public class SlicerTest {
         //SentenceSlicer slicer = new SentenceSlicer();
 
         //when
-        ArrayList result = Utils.TextProcessing.sliceText("przyjaciel ';';'; .,przyjaciel elo siema . /*-");
+        ArrayList result = Utils.TextProcessing.sliceText("przyjaciel ';';'; .,przyjaciel elo siema .1 /*-");
 
         //then
         assertEquals(asList("przyjaciel", "przyjaciel", "elo", "siema"), result);

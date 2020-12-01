@@ -37,12 +37,6 @@ public class AudioFilePlayer extends Thread{
                  stream(getAudioInputStream(outFormat, inputStream), playingLine);
                  playingLine.drain();
                  playingLine.stop();
-                 /*line.open(outFormat);
-                 line.start();
-                 stream(getAudioInputStream(outFormat, inputStream), line);
-                 line.drain();
-                 line.stop();
-                 runFlag = false;*/
              }
          } catch (LineUnavailableException | IOException e) {
              e.printStackTrace();

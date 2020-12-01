@@ -49,8 +49,10 @@ public class SoundLibraryContent {
     }
 
     public static boolean isInLibrary(String candidate){
-        return getFileNames().contains(candidate);
+        return fileMap.containsKey(candidate);
     }
+
+    public static File getFromFileMap(String key) { return fileMap.get(key); }
 
     // --------------------------------------------------------------
     // ------------- Saving library path to json --------------------

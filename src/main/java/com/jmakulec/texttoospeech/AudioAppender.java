@@ -9,42 +9,38 @@ import java.io.SequenceInputStream;
 import java.util.List;
 
 public class AudioAppender {
-    private static final String libURL =  "E:\\Dokumenty\\PracaInz\\soundfiles\\";
-    //todo make liburl an input
-
-
-//todo: wrong name files
-    public static AudioInputStream appendFiles(List<String> list) throws IOException, UnsupportedAudioFileException {
+    public static AudioInputStream appendWordFragments(List<String> list) throws IOException, UnsupportedAudioFileException {
+        AudioInputStream pause = AudioSystem.getAudioInputStream(SoundLibraryContent.getFromFileMap("0pause0"));
         AudioInputStream tempAppend = null;
         if (list.size() == 1) {
-            tempAppend = appender(AudioSystem.getAudioInputStream(new File(libURL + list.get(0) + ".wav")),
-                    AudioSystem.getAudioInputStream(new File(libURL + "0pause0.wav")));
+            tempAppend = appender(AudioSystem.getAudioInputStream(SoundLibraryContent.getFromFileMap(list.get(0))),
+                    pause);
         }
         else {
             for (int i = 0; i < list.size() - 1; i++) {
                 if (tempAppend == null) {
-                    tempAppend = appender(AudioSystem.getAudioInputStream(new File(libURL + list.get(0) + ".wav")),
-                            AudioSystem.getAudioInputStream(new File(libURL + list.get(1) + ".wav")));
+                    tempAppend = appender(AudioSystem.getAudioInputStream(SoundLibraryContent.getFromFileMap(list.get(0))),
+                            AudioSystem.getAudioInputStream(SoundLibraryContent.getFromFileMap(list.get(1))));
                 } else tempAppend = appender(tempAppend,
-                        AudioSystem.getAudioInputStream(new File(libURL + list.get(i + 1) + ".wav")));
+                        AudioSystem.getAudioInputStream(SoundLibraryContent.getFromFileMap(list.get(i + 1))));
             }
         }
         return tempAppend;
     }
 
     public static AudioInputStream appendWords(List<AudioInputStream> list) throws IOException, UnsupportedAudioFileException {
+        AudioInputStream pause = AudioSystem.getAudioInputStream(SoundLibraryContent.getFromFileMap("0pause0"));
         AudioInputStream tempAppend = null;
         if (list.size() == 1) {
-            tempAppend = appender(list.get(0),
-                    AudioSystem.getAudioInputStream(new File(libURL + "0pause0.wav")));
+            tempAppend = appender(list.get(0), pause);
         }
         else {
-            for (int i = 0; i < list.size() - 1; i++) {
-                if (tempAppend == null) {
-                    tempAppend = appender(list.get(0),
-                            list.get(1));
-                } else tempAppend = appender(tempAppend,
-                        list.get( i + 1));
+            for (AudioInputStream word : list) {
+                if (tempAppend == null) tempAppend = appender(word, pause);
+                else {
+                    AudioInputStream tempPrevious = appender(tempAppend, word);
+                    tempAppend = appender(tempPrevious, pause);
+                }
             }
         }
         return tempAppend;
