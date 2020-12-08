@@ -37,7 +37,7 @@ public class AudioAppender {
         else {
             for (AudioInputStream word : list) {
                 if (tempAppend == null) tempAppend = appender(word, pause);
-                else {
+                else if (word != null){
                     AudioInputStream tempPrevious = appender(tempAppend, word);
                     tempAppend = appender(tempPrevious, pause);
                 }

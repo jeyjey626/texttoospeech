@@ -11,6 +11,7 @@ public class AudioFilePlayer extends Thread{
     public static volatile boolean runFlag = true;
 
     public SourceDataLine playingLine;
+    static int bytesRead=-1;
 
     private static final byte[] buffer = new byte[65536];
     private static AudioInputStream inputStream;
@@ -28,7 +29,6 @@ public class AudioFilePlayer extends Thread{
         try{
          final AudioFormat outFormat =  getOutFormat(inputStream.getFormat());
          final DataLine.Info info = new DataLine.Info(SourceDataLine.class, outFormat);
-
          try(final  SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info)) {
              if (line != null){
                  this.playingLine = line;
@@ -52,8 +52,8 @@ public class AudioFilePlayer extends Thread{
     }
 
     private static void stream(AudioInputStream in, SourceDataLine line) throws IOException {
-        for (int n = 0; n != -1; n = in.read(buffer, 0, buffer.length)) {
-            line.write(buffer, 0, n);
+        while ((bytesRead = in.read(buffer)) != -1) {
+            line.write(buffer, 0, bytesRead);
         }
     }
 

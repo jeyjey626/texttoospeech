@@ -64,7 +64,6 @@ public class SoundLibraryContent {
         try (FileWriter file = new FileWriter("libraryPath.json")) {
             file.write(libraryDetails.toJSONString());
             file.flush();
-            System.out.println("yup");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,8 +80,6 @@ public class SoundLibraryContent {
             JSONObject pathJSON = (JSONObject) obj;
             inputLibrary( (String) pathJSON.get("path"));
             retValue = !fileMap.isEmpty();
-            System.out.println(retValue);
-            System.out.println(fileMap);
         } catch (FileNotFoundException e) {
             retValue = false;
         } catch (IOException | ParseException e) {
